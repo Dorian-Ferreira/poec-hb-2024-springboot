@@ -1,0 +1,14 @@
+package fr.poec.springboot.repository;
+
+import fr.poec.springboot.entity.Country;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface CountryRepository extends JpaRepository<Country, Long> {
+
+    Optional<Country> findBySlug(String field);
+}
