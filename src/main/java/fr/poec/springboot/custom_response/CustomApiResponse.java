@@ -13,9 +13,9 @@ import lombok.Setter;
 @Setter
 public class CustomApiResponse {
 
-    @JsonView(JsonViews.View.class)
+    @JsonView(JsonViews.CustomApiResponseView.class)
     private int code;
 
-    @JsonView(JsonViews.View.class)
+    @JsonView(JsonViews.CustomApiResponseView.class)
     private String entity;
 }
