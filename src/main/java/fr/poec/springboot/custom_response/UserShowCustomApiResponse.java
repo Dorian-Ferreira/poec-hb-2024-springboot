@@ -18,9 +18,5 @@ import java.util.List;
 public class UserShowCustomApiResponse extends CustomApiResponse {
 
     @JsonView(JsonViews.UserShowView.class)
-    private List<User> objects = new ArrayList<>();
-
-    public void addObject(User object) {
-        objects.add(object);
-    }
+    private User object;
 }

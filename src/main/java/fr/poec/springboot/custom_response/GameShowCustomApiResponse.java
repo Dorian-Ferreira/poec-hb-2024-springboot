@@ -18,9 +18,6 @@ import java.util.List;
 public class GameShowCustomApiResponse extends CustomApiResponse {
 
     @JsonView(JsonViews.GameShowView.class)
-    private List<Game> objects = new ArrayList<>();
+    private Game object;
 
-    public void addObject(Game object) {
-        objects.add(object);
-    }
 }

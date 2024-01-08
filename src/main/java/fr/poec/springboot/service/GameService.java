@@ -57,7 +57,7 @@ public class GameService {
 
         if(game.isPresent()) {
             apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(Collections.singletonList(game.get()));
+            apiResponse.setObject(game.get());
 
             return apiResponse;
         }

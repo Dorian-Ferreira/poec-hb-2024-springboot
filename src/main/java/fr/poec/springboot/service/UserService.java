@@ -53,7 +53,7 @@ public class UserService {
 
         if(user.isPresent()){
             apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(Collections.singletonList(user.get()));
+            apiResponse.setObject(user.get());
 
             return apiResponse;
         }
