@@ -34,7 +34,7 @@ public class CategoryService {
             return errorApiResponse;
         }
         apiResponse.setCode(HttpStatus.OK.value());
-        apiResponse.setObjects(new ArrayList<>(categories));
+        apiResponse.setObjects(categories);
 
         return apiResponse;
     }
@@ -57,7 +57,7 @@ public class CategoryService {
 
         if(category.isPresent()){
             apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(Collections.singletonList(category.get()));
+            apiResponse.addObject(category.get());
 
             return apiResponse;
         }

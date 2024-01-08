@@ -35,7 +35,7 @@ public class GameService {
             return errorApiResponse;
         }
         apiResponse.setCode(HttpStatus.OK.value());
-        apiResponse.setObjects(new ArrayList<>(games));
+        apiResponse.setObjects(games);
 
         return apiResponse;
     }

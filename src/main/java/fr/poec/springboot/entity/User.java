@@ -33,11 +33,11 @@ public class User {
     @JsonView(JsonViews.UserListView.class)
     private String nickname;
 
+    @JsonView(JsonViews.IgnoreView.class)
     private String password;
 
     @JsonView(JsonViews.UserShowView.class)
     private Date createdAt;
-
 
     @JsonView(JsonViews.UserMinimalView.class)
     private String profileImage;

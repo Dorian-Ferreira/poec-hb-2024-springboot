@@ -34,7 +34,7 @@ public class ReviewService {
         }
 
         apiResponse.setCode(HttpStatus.OK.value());
-        apiResponse.setObjects(new ArrayList<>(reviews));
+        apiResponse.setObjects(reviews);
 
         return apiResponse;
     }
