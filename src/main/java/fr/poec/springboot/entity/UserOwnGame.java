@@ -19,6 +19,7 @@ public class UserOwnGame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.IgnoreView.class)
     private Long id;
 
     @JsonView(JsonViews.UserShowView.class)
@@ -34,6 +35,7 @@ public class UserOwnGame {
     private boolean isInstalled;
 
     @ManyToOne
+    @JsonView(JsonViews.IgnoreView.class)
     private User user;
 
     @ManyToOne

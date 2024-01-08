@@ -36,9 +36,7 @@ public class Game {
     @JsonView(JsonViews.GameShowView.class)
     private Date publishedAt;
 
-    @JsonView({
-            JsonViews.GameListView.class,
-    })
+    @JsonView(JsonViews.GameListView.class)
     private String slug;
 
     @JsonView(JsonViews.GameListView.class)
@@ -49,6 +47,7 @@ public class Game {
     private Publisher publisher;
 
     @OneToMany(mappedBy = "game")
+    @JsonView(JsonViews.IgnoreView.class)
     private List<UserOwnGame> owners = new ArrayList<>();
 
     @ManyToMany

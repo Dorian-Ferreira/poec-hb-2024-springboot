@@ -1,7 +1,6 @@
 package fr.poec.springboot.custom_response;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import fr.poec.springboot.json_view.JsonViews;
+import fr.poec.springboot.entity.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PlatformApiResponse extends ApiResponse {
+public class CountryCustomApiResponse extends CustomApiResponse {
 
-    private List<Object> objects = new ArrayList<>();
+    private List<Country> objects = new ArrayList<>();
 
-    public void addObject(Object object) {
+    public void addObject(Country object) {
         objects.add(object);
     }
 }

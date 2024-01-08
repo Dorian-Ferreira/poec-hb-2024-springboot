@@ -1,7 +1,8 @@
 package fr.poec.springboot.service;
 
-import fr.poec.springboot.custom_response.ApiResponse;
-import fr.poec.springboot.custom_response.CategoryApiResponse;
+import fr.poec.springboot.custom_response.CustomApiResponse;
+import fr.poec.springboot.custom_response.CategoryCustomApiResponse;
+import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
 import fr.poec.springboot.entity.Category;
 import fr.poec.springboot.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -19,26 +20,31 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
 
-    public ApiResponse findAll() {
-        CategoryApiResponse apiResponse = new CategoryApiResponse();
+    public CustomApiResponse findAll() {
+        CategoryCustomApiResponse apiResponse = new CategoryCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(Category.class.getSimpleName());
+        errorApiResponse.setEntity(Category.class.getSimpleName());
+
         List<Category> categories = categoryRepository.findAll();
-        if(categories.isEmpty()){
-            apiResponse.setCode(HttpStatus.NO_CONTENT.value());
-            apiResponse.addObject("There is no categories.");
-        } else {
-            apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(new ArrayList<>(categories));
+        if(categories.isEmpty()) {
+            errorApiResponse.setCode(HttpStatus.NO_CONTENT.value());
+            errorApiResponse.setMessage("There is no categories.");
+            return errorApiResponse;
         }
+        apiResponse.setCode(HttpStatus.OK.value());
+        apiResponse.setObjects(new ArrayList<>(categories));
 
         return apiResponse;
     }
 
-    public ApiResponse show(String field) {
-        CategoryApiResponse apiResponse = new CategoryApiResponse();
+    public CustomApiResponse show(String field) {
+        CategoryCustomApiResponse apiResponse = new CategoryCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(Category.class.getSimpleName());
+        errorApiResponse.setEntity(Category.class.getSimpleName());
 
         Optional<Category> category;
 
@@ -52,11 +58,11 @@ public class CategoryService {
         if(category.isPresent()){
             apiResponse.setCode(HttpStatus.OK.value());
             apiResponse.setObjects(Collections.singletonList(category.get()));
-        } else {
-            apiResponse.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
-            apiResponse.addObject("This category doesn't exist.");
-        }
 
-        return apiResponse;
+            return apiResponse;
+        }
+        errorApiResponse.setCode(HttpStatus.NO_CONTENT.value());
+        errorApiResponse.setMessage("There is no categories.");
+        return errorApiResponse;
     }
 }

@@ -17,8 +17,10 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.IgnoreView.class)
     private Long id;
 
+    @JsonView(JsonViews.IgnoreView.class)
     private String image;
 
     @JsonView(JsonViews.GameShowView.class)

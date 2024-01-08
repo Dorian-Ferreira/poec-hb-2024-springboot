@@ -17,13 +17,16 @@ public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.IgnoreView.class)
     private Long id;
 
     @JsonView(JsonViews.CountryDetailsView.class)
     private String name;
 
+    @JsonView(JsonViews.IgnoreView.class)
     private String code;
 
+    @JsonView(JsonViews.IgnoreView.class)
     private String nationality;
 
     @JsonView(JsonViews.CountryDetailsView.class)

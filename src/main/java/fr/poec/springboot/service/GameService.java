@@ -1,8 +1,9 @@
 package fr.poec.springboot.service;
 
-import fr.poec.springboot.custom_response.ApiResponse;
-import fr.poec.springboot.custom_response.GameListApiResponse;
-import fr.poec.springboot.custom_response.GameShowApiResponse;
+import fr.poec.springboot.custom_response.CustomApiResponse;
+import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
+import fr.poec.springboot.custom_response.GameListCustomApiResponse;
+import fr.poec.springboot.custom_response.GameShowCustomApiResponse;
 import fr.poec.springboot.entity.Game;
 import fr.poec.springboot.repository.GameRepository;
 import lombok.AllArgsConstructor;
@@ -20,26 +21,31 @@ public class GameService {
 
     private GameRepository gameRepository;
 
-    public ApiResponse findAll() {
-        GameListApiResponse apiResponse = new GameListApiResponse();
+    public CustomApiResponse findAll() {
+        GameListCustomApiResponse apiResponse = new GameListCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(Game.class.getSimpleName());
+        errorApiResponse.setEntity(Game.class.getSimpleName());
+
         List<Game> games = gameRepository.findAll();
-        if(games.isEmpty()){
-            apiResponse.setCode(HttpStatus.NO_CONTENT.value());
-            apiResponse.addObject("There is no games.");
-        } else {
-            apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(new ArrayList<>(games));
+        if(games.isEmpty()) {
+            errorApiResponse.setCode(HttpStatus.NO_CONTENT.value());
+            errorApiResponse.setMessage("There is no games.");
+            return errorApiResponse;
         }
+        apiResponse.setCode(HttpStatus.OK.value());
+        apiResponse.setObjects(new ArrayList<>(games));
 
         return apiResponse;
     }
 
-    public ApiResponse show(String field) {
-        GameShowApiResponse apiResponse = new GameShowApiResponse();
+    public CustomApiResponse show(String field) {
+        GameShowCustomApiResponse apiResponse = new GameShowCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(Game.class.getSimpleName());
+        errorApiResponse.setEntity(Game.class.getSimpleName());
 
         Optional<Game> game;
         try {
@@ -49,15 +55,16 @@ public class GameService {
             game = this.gameRepository.findBySlug(field);
         }
 
-        if(game.isPresent()){
+        if(game.isPresent()) {
             apiResponse.setCode(HttpStatus.OK.value());
             apiResponse.setObjects(Collections.singletonList(game.get()));
-        } else {
-            apiResponse.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
-            apiResponse.addObject("This game doesn't exist.");
+
+            return apiResponse;
         }
 
-        return apiResponse;
+        errorApiResponse.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        errorApiResponse.setMessage("This game doesn't exist.");
 
+        return errorApiResponse;
     }
 }

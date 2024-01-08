@@ -7,19 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserShowApiResponse extends ApiResponse {
+public class CustomApiResponse {
 
-    @JsonView(JsonViews.UserShowView.class)
-    private List<Object> objects = new ArrayList<>();
+    @JsonView(JsonViews.View.class)
+    private int code;
 
-    public void addObject(Object object) {
-        objects.add(object);
-    }
+    @JsonView(JsonViews.View.class)
+    private String entity;
 }

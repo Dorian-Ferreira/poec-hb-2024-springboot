@@ -1,6 +1,7 @@
 package fr.poec.springboot.json_view;
 
 public class JsonViews {
+    public interface IgnoreView {}
     public interface CountryDetailsView {}
     public interface PublisherMinimalView {}
     public interface ReviewMinimalView {}

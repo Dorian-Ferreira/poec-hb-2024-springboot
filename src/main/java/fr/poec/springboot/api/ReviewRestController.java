@@ -1,10 +1,17 @@
 package fr.poec.springboot.api;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import fr.poec.springboot.custom_response.ApiResponse;
+import fr.poec.springboot.custom_response.CustomApiResponse;
+import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
+import fr.poec.springboot.custom_response.PublisherCustomApiResponse;
+import fr.poec.springboot.custom_response.ReviewCustomApiResponse;
 import fr.poec.springboot.json_view.JsonViews;
 import fr.poec.springboot.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +27,16 @@ public class ReviewRestController {
     @GetMapping
     @JsonView(JsonViews.ReviewListView.class)
     @Operation(summary = "Get a list of Review", description = "Returns all Review of the application")
-    public ApiResponse list() {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ReviewCustomApiResponse.class))}),
+
+            @ApiResponse(responseCode = "204", description = "KO", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorCustomApiResponse.class))})
+    })
+    public CustomApiResponse list() {
         return reviewService.findAll();
     }
 

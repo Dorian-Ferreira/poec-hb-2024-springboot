@@ -1,6 +1,7 @@
 package fr.poec.springboot.custom_response;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.poec.springboot.entity.Game;
 import fr.poec.springboot.json_view.JsonViews;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ApiResponse {
+public class GameShowCustomApiResponse extends CustomApiResponse {
 
-    @JsonView(JsonViews.View.class)
-    private int code;
+    @JsonView(JsonViews.GameShowView.class)
+    private List<Game> objects = new ArrayList<>();
 
-    @JsonView(JsonViews.View.class)
-    private String entity;
+    public void addObject(Game object) {
+        objects.add(object);
+    }
 }

@@ -1,8 +1,9 @@
 package fr.poec.springboot.service;
 
-import fr.poec.springboot.custom_response.ApiResponse;
-import fr.poec.springboot.custom_response.UserListApiResponse;
-import fr.poec.springboot.custom_response.UserShowApiResponse;
+import fr.poec.springboot.custom_response.CustomApiResponse;
+import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
+import fr.poec.springboot.custom_response.UserListCustomApiResponse;
+import fr.poec.springboot.custom_response.UserShowCustomApiResponse;
 import fr.poec.springboot.entity.User;
 import fr.poec.springboot.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,37 +21,46 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    public ApiResponse findAll() {
-        UserListApiResponse apiResponse = new UserListApiResponse();
+    public CustomApiResponse findAll() {
+        UserListCustomApiResponse apiResponse = new UserListCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(User.class.getSimpleName());
+        errorApiResponse.setEntity(User.class.getSimpleName());
+
         List<User> users = userRepository.findAll();
         if(users.isEmpty()){
-            apiResponse.setCode(HttpStatus.NO_CONTENT.value());
-            apiResponse.addObject("There is no users.");
-        } else {
-            apiResponse.setCode(HttpStatus.OK.value());
-            apiResponse.setObjects(new ArrayList<>(users));
+            errorApiResponse.setCode(HttpStatus.NO_CONTENT.value());
+            errorApiResponse.setMessage("There is no users.");
+
+            return errorApiResponse;
         }
+
+        apiResponse.setCode(HttpStatus.OK.value());
+        apiResponse.setObjects(new ArrayList<>(users));
 
         return apiResponse;
     }
 
-    public ApiResponse show(Long id) {
-        UserShowApiResponse apiResponse = new UserShowApiResponse();
+    public CustomApiResponse show(Long id) {
+        UserShowCustomApiResponse apiResponse = new UserShowCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
         apiResponse.setEntity(User.class.getSimpleName());
+        errorApiResponse.setEntity(User.class.getSimpleName());
 
         Optional<User> user = userRepository.findById(id);
 
         if(user.isPresent()){
             apiResponse.setCode(HttpStatus.OK.value());
             apiResponse.setObjects(Collections.singletonList(user.get()));
-        } else {
-            apiResponse.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
-            apiResponse.addObject("This user doesn't exist.");
+
+            return apiResponse;
         }
 
-        return apiResponse;
+        errorApiResponse.setCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        errorApiResponse.setMessage("This user doesn't exist.");
+
+        return errorApiResponse;
     }
 }
