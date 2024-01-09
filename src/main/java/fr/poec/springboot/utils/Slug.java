@@ -2,13 +2,21 @@ package fr.poec.springboot.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.text.Normalizer;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 @Component
 public class Slug {
 
-    public String slugify(String toSlug) {
-        String slug = toSlug.toLowerCase();
-        slug = slug.replaceAll("^([a-z]|[à-ü]|[0-9])", "");
-        slug = slug.replaceAll(" ", "-");
-        return slug;
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
+    public String slugify(String input) {
+        String noWhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(noWhitespace, Normalizer.Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
     }
+
 }
