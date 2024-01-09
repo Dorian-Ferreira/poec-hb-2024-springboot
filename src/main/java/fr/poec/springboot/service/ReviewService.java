@@ -1,5 +1,6 @@
 package fr.poec.springboot.service;
 
+import fr.poec.springboot.DTO.ReviewDTO;
 import fr.poec.springboot.custom_response.CustomApiResponse;
 import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
 import fr.poec.springboot.custom_response.ReviewCustomApiResponse;
@@ -9,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,6 +18,8 @@ import java.util.List;
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
+    private GameService gameService;
+    private UserService userService;
 
     public CustomApiResponse findAll() {
         ReviewCustomApiResponse apiResponse = new ReviewCustomApiResponse();
@@ -37,5 +40,32 @@ public class ReviewService {
         apiResponse.setObjects(reviews);
 
         return apiResponse;
+    }
+
+    public CustomApiResponse persist(ReviewDTO reviewDTO) {
+        ReviewCustomApiResponse apiResponse = new ReviewCustomApiResponse();
+
+        apiResponse.setEntity(Review.class.getSimpleName());
+        apiResponse.setCode(HttpStatus.OK.value());
+        apiResponse.addObject(reviewRepository.saveAndFlush(reviewFromDTO(reviewDTO)));
+
+        return apiResponse;
+    }
+
+    private Review reviewFromDTO(ReviewDTO reviewDTO) {
+        Review review = new Review();
+
+        review.setTitle(reviewDTO.getTitle());
+        review.setContent(reviewDTO.getContent());
+        review.setCreatedAt(new Date());
+
+        review.setGame(gameService.getById(reviewDTO.getGameId()).get());
+        review.setUser(userService.getById(reviewDTO.getUserId()).get());
+
+        review.setRating(reviewDTO.getRating());
+        review.setDownVote(0);
+        review.setUpVote(0);
+
+        return review;
     }
 }

@@ -1,21 +1,16 @@
 package fr.poec.springboot.service;
 
-import fr.poec.springboot.DTO.CountryDTO;
 import fr.poec.springboot.DTO.PublisherDTO;
-import fr.poec.springboot.custom_response.CountryCustomApiResponse;
 import fr.poec.springboot.custom_response.CustomApiResponse;
 import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
 import fr.poec.springboot.custom_response.PublisherCustomApiResponse;
-import fr.poec.springboot.entity.Country;
 import fr.poec.springboot.entity.Publisher;
-import fr.poec.springboot.repository.CountryRepository;
 import fr.poec.springboot.repository.PublisherRepository;
 import fr.poec.springboot.utils.Slug;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -56,7 +51,7 @@ public class PublisherService {
     }
 
 
-    public CustomApiResponse create(PublisherDTO publisherDTO, Long id) {
+    public CustomApiResponse persist(PublisherDTO publisherDTO, Long id) {
         PublisherCustomApiResponse apiResponse = new PublisherCustomApiResponse();
         ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 

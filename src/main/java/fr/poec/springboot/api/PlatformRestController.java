@@ -42,15 +42,19 @@ public class PlatformRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = PlatformCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
     })
     public CustomApiResponse create(@Valid @RequestBody PlatformDTO platformDTO) {
-        return platformService.create(platformDTO);
+        return platformService.persist(platformDTO, null);
+    }
+
+    @PutMapping(path = "/{id}")
+    @Operation(summary = "Update a Platform", description = "Returns all Platform of the application after modification")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = PlatformCustomApiResponse.class))}),
+    })
+    public CustomApiResponse update(@Valid @RequestBody PlatformDTO platformDTO,@PathVariable Long id) {
+        return platformService.persist(platformDTO, id);
     }
 }

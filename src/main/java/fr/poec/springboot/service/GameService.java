@@ -50,7 +50,7 @@ public class GameService {
         Optional<Game> game;
         try {
             Long id = Long.parseLong(field);
-            game = this.gameRepository.findById(id);
+            game = getById(id);
         } catch (NumberFormatException e) {
             game = this.gameRepository.findBySlug(field);
         }
@@ -66,5 +66,9 @@ public class GameService {
         errorApiResponse.setMessage("This game doesn't exist.");
 
         return errorApiResponse;
+    }
+
+    public Optional<Game> getById(Long id) {
+        return this.gameRepository.findById(id);
     }
 }

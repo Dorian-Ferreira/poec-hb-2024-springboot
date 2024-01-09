@@ -1,7 +1,6 @@
 package fr.poec.springboot.api;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import fr.poec.springboot.DTO.CountryDTO;
 import fr.poec.springboot.DTO.PublisherDTO;
 import fr.poec.springboot.custom_response.*;
 import fr.poec.springboot.json_view.JsonViews;
@@ -44,12 +43,9 @@ public class PublisherRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = CountryCustomApiResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse create(@Valid @RequestBody PublisherDTO publisherDTO) {
-        return publisherService.create(publisherDTO, null);
+        return publisherService.persist(publisherDTO, null);
     }
 
     @PutMapping(path = "/{id}")
@@ -58,11 +54,8 @@ public class PublisherRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = CountryCustomApiResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse update(@Valid @RequestBody PublisherDTO publisherDTO, @PathVariable Long id) {
-        return publisherService.create(publisherDTO, id);
+        return publisherService.persist(publisherDTO, id);
     }
 }

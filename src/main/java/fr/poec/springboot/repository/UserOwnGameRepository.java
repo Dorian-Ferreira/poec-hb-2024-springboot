@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserOwnGameRepository extends JpaRepository<UserOwnGame, Long> {
-
+    boolean existsByUserIdAndGameId(Long userId, Long gameId);
 }

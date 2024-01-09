@@ -1,8 +1,6 @@
 package fr.poec.springboot.api;
 
 import fr.poec.springboot.DTO.CountryDTO;
-import fr.poec.springboot.DTO.UserPostDTO;
-import fr.poec.springboot.DTO.UserPutDTO;
 import fr.poec.springboot.custom_response.*;
 import fr.poec.springboot.service.CountryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +58,7 @@ public class CountryRestController {
                     @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse create(@Valid @RequestBody CountryDTO countryDTO) {
-        return countryService.create(countryDTO, null);
+        return countryService.persist(countryDTO, null);
     }
 
     @PutMapping(path = "/{id}")
@@ -69,11 +67,8 @@ public class CountryRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = CountryCustomApiResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse update(@Valid @RequestBody CountryDTO countryDTO, @PathVariable Long id) {
-        return countryService.create(countryDTO, id);
+        return countryService.persist(countryDTO, id);
     }
 }

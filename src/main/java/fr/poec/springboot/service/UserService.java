@@ -3,8 +3,6 @@ package fr.poec.springboot.service;
 import fr.poec.springboot.DTO.UserPostDTO;
 import fr.poec.springboot.DTO.UserPutDTO;
 import fr.poec.springboot.custom_response.*;
-import fr.poec.springboot.entity.Country;
-import fr.poec.springboot.entity.Platform;
 import fr.poec.springboot.entity.User;
 import fr.poec.springboot.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -65,7 +63,7 @@ public class UserService {
         return errorApiResponse;
     }
 
-    public CustomApiResponse create(UserPutDTO userDTO, Long id) {
+    public CustomApiResponse persist(UserPutDTO userDTO, Long id) {
         UserShowCustomApiResponse apiResponse = new UserShowCustomApiResponse();
         ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
@@ -124,17 +122,17 @@ public class UserService {
         }
         User user = oUser.get();
 
-        if(userDTO.getNickname() != null) {
-            user.setNickname(userDTO.getNickname());
-        }
-        if(userDTO.getPassword() != null) {
+        if(userDTO.getPassword() != null || !user.getPassword().isBlank()) {
             user.setPassword(userDTO.getPassword());
         }
-        if(userDTO.getProfileImage() != null) {
-            user.setProfileImage(userDTO.getProfileImage());
-        }
+
+        user.setNickname(userDTO.getNickname());
+        user.setProfileImage(userDTO.getProfileImage());
+
         if(userDTO.getCountryId() != null) {
             countryService.getById(userDTO.getCountryId()).ifPresent(user::setCountry);
+        } else {
+            user.setCountry(null);
         }
 
         return user;

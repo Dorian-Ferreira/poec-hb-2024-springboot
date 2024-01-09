@@ -1,7 +1,6 @@
 package fr.poec.springboot.api;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import fr.poec.springboot.DTO.PlatformDTO;
 import fr.poec.springboot.DTO.UserPostDTO;
 import fr.poec.springboot.DTO.UserPutDTO;
 import fr.poec.springboot.custom_response.*;
@@ -61,13 +60,9 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = UserShowCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse create(@Valid @RequestBody UserPostDTO userDTO) {
-        return userService.create(userDTO, null);
+        return userService.persist(userDTO, null);
     }
 
     @PutMapping(path = "/{id}")
@@ -76,12 +71,8 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "OK", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = UserShowCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "400", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))}),
     })
     public CustomApiResponse update(@Valid @RequestBody UserPutDTO userDTO, @PathVariable Long id) {
-        return userService.create(userDTO, id);
+        return userService.persist(userDTO, id);
     }
 }

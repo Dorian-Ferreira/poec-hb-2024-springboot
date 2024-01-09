@@ -1,5 +1,7 @@
 package fr.poec.springboot.api;
 
+import fr.poec.springboot.DTO.CategoryDTO;
+import fr.poec.springboot.custom_response.CountryCustomApiResponse;
 import fr.poec.springboot.custom_response.CustomApiResponse;
 import fr.poec.springboot.custom_response.CategoryCustomApiResponse;
 import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
@@ -9,12 +11,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -53,4 +52,28 @@ public class CategoryRestController {
         return this.categoryService.show(field);
     }
 
+    @PostMapping
+    @Operation(summary = "Add a Category", description = "Returns the added Category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CountryCustomApiResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "KO", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorCustomApiResponse.class))}),
+    })
+    public CustomApiResponse create(@Valid @RequestBody CategoryDTO categoryDTO) {
+        return categoryService.persist(categoryDTO, null);
+    }
+
+    @PutMapping(path = "/{id}")
+    @Operation(summary = "Modify a Category", description = "Returns the modified Category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CountryCustomApiResponse.class))}),
+    })
+    public CustomApiResponse update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
+        return categoryService.persist(categoryDTO, id);
+    }
 }

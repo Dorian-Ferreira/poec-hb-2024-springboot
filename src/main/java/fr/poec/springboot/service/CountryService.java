@@ -1,20 +1,16 @@
 package fr.poec.springboot.service;
 
 import fr.poec.springboot.DTO.CountryDTO;
-import fr.poec.springboot.DTO.UserPutDTO;
 import fr.poec.springboot.custom_response.CustomApiResponse;
 import fr.poec.springboot.custom_response.CountryCustomApiResponse;
 import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
 import fr.poec.springboot.entity.Country;
-import fr.poec.springboot.entity.User;
 import fr.poec.springboot.repository.CountryRepository;
 import fr.poec.springboot.utils.Slug;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,7 +72,7 @@ public class CountryService {
     }
 
 
-    public CustomApiResponse create(CountryDTO countryDTO, Long id) {
+    public CustomApiResponse persist(CountryDTO countryDTO, Long id) {
         CountryCustomApiResponse apiResponse = new CountryCustomApiResponse();
         ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
 
