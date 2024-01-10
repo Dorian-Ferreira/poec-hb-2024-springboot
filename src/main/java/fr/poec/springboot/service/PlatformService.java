@@ -18,7 +18,6 @@ import java.util.List;
 public class PlatformService {
 
     private PlatformRepository platformRepository;
-    private Slug slug;
 
     public CustomApiResponse findAll() {
         PlatformCustomApiResponse apiResponse = new PlatformCustomApiResponse();
@@ -74,7 +73,6 @@ public class PlatformService {
 
         platform.setId(id);
         platform.setName(platformDTO.getName());
-        platform.setSlug(slug.slugify(platformDTO.getName()));
 
         return platform;
     }

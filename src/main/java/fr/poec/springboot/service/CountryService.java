@@ -19,7 +19,6 @@ import java.util.Optional;
 public class CountryService {
 
     private CountryRepository countryRepository;
-    private Slug slug;
 
     public CustomApiResponse findAll() {
         CountryCustomApiResponse apiResponse = new CountryCustomApiResponse();
@@ -106,7 +105,6 @@ public class CountryService {
         country.setCode(countryDTO.getCode().toLowerCase());
         country.setName(countryDTO.getName());
         country.setNationality(countryDTO.getNationality());
-        country.setSlug(slug.slugify(countryDTO.getNationality()));
         country.setUrlFlag("https://flagcdn.com/32x24/" + country.getCode() + ".png");
 
         return country;

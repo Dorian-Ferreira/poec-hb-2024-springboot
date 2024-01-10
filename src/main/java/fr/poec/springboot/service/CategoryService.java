@@ -19,7 +19,6 @@ import java.util.Optional;
 public class CategoryService {
 
     private CategoryRepository categoryRepository;
-    private Slug slug;
 
     public CustomApiResponse findAll() {
         CategoryCustomApiResponse apiResponse = new CategoryCustomApiResponse();
@@ -87,7 +86,6 @@ public class CategoryService {
         country.setId(id);
         country.setName(categoryDTO.getName());
         country.setImage(categoryDTO.getImage());
-        country.setSlug(slug.slugify(categoryDTO.getName()));
 
         return country;
     }

@@ -1,6 +1,7 @@
 package fr.poec.springboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.poec.springboot.entity.interfaces.SluggerInterface;
 import fr.poec.springboot.json_view.JsonViews;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Category {
+public class Category implements SluggerInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +29,10 @@ public class Category {
 
     @JsonView(JsonViews.GameShowView.class)
     private String slug;
+
+    @Override
+    @JsonView(JsonViews.IgnoreView.class)
+    public String getField() {
+        return name;
+    }
 }

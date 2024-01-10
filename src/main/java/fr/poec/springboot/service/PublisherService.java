@@ -19,7 +19,6 @@ public class PublisherService {
 
     private PublisherRepository publisherRepository;
     private CountryService countryService;
-    private Slug slug;
 
     public CustomApiResponse show(String field) {
         PublisherCustomApiResponse apiResponse = new PublisherCustomApiResponse();
@@ -83,7 +82,6 @@ public class PublisherService {
         }
 
         publisher.setName(publisherDTO.getName());
-        publisher.setSlug(slug.slugify(publisherDTO.getName()));
         publisher.setCountry(countryService.getById(publisherDTO.getCountryId()).get());
         publisher.setCreatedAt(publisherDTO.getCreatedAt());
         publisher.setWebsite(publisherDTO.getWebsite());
