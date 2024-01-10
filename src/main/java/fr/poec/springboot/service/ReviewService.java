@@ -57,7 +57,6 @@ public class ReviewService {
 
         review.setTitle(reviewDTO.getTitle());
         review.setContent(reviewDTO.getContent());
-        review.setCreatedAt(new Date());
 
         review.setGame(gameService.getById(reviewDTO.getGameId()).get());
         review.setUser(userService.getById(reviewDTO.getUserId()).get());

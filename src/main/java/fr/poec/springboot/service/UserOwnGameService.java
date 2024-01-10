@@ -14,6 +14,7 @@ import fr.poec.springboot.exception.GameAlreadyBoughtException;
 import fr.poec.springboot.exception.NotEnoughMoneyException;
 import fr.poec.springboot.repository.UserOwnGameRepository;
 import fr.poec.springboot.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,6 @@ public class UserOwnGameService {
         userOwnGame.setGame(game);
 
         userOwnGame.setGameTime(0);
-        userOwnGame.setCreatedAt(new Date());
         userOwnGame.setInstalled(false);
 
         return userOwnGame;

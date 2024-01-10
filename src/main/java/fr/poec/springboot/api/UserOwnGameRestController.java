@@ -31,11 +31,6 @@ public class UserOwnGameRestController {
     @PostMapping
     @JsonView(JsonViews.UserShowView.class)
     @Operation(summary = "Add a UserOwnGame", description = "Returns the user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserShowCustomApiResponse.class))}),
-    })
     public CustomApiResponse create(@Valid @RequestBody UserOwnGameDTO userDTO) {
         return userOwnGameService.persist(userDTO);
     }

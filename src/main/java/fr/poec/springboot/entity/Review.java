@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class Review {
     @JsonView(JsonViews.ReviewMinimalView.class)
     private String content;
 
-
+    @CreationTimestamp
     @JsonView(JsonViews.ReviewMinimalView.class)
     private Date createdAt;
 

@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -22,12 +25,14 @@ public class UserOwnGame {
     @JsonView(JsonViews.IgnoreView.class)
     private Long id;
 
+    @CreationTimestamp
     @JsonView(JsonViews.UserShowView.class)
     private Date createdAt;
 
     @JsonView(JsonViews.UserShowView.class)
     private int gameTime;
 
+    @UpdateTimestamp
     @JsonView(JsonViews.UserShowView.class)
     private Date lastUsedAt;
 

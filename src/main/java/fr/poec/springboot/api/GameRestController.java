@@ -25,15 +25,6 @@ public class GameRestController {
     @GetMapping
     @JsonView(JsonViews.GameListView.class)
     @Operation(summary = "Get a list of Game", description = "Returns all Game of the application")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = GameListCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse list() {
         return gameService.findAll();
     }
@@ -41,15 +32,6 @@ public class GameRestController {
     @GetMapping(path = "/{field}")
     @JsonView(JsonViews.GameShowView.class)
     @Operation(summary = "Get a Game by id or slug", description = "Returns a Game as per the id or slug")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = GameShowCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse show(@PathVariable String field) {
         return gameService.show(field);
     }

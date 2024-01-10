@@ -24,37 +24,20 @@ public class PublisherRestController {
     @GetMapping(path = "/{field}")
     @JsonView(JsonViews.PublisherShowView.class)
     @Operation(summary = "Get a Publisher by id or slug", description = "Returns a Publisher as per the id or slug")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = PublisherCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "422", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse show(@PathVariable String field) {
         return publisherService.show(field);
     }
 
     @PostMapping
+    @JsonView(JsonViews.PublisherShowView.class)
     @Operation(summary = "Add a Publisher", description = "Returns the added Publisher")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = CountryCustomApiResponse.class))}),
-    })
     public CustomApiResponse create(@Valid @RequestBody PublisherDTO publisherDTO) {
         return publisherService.persist(publisherDTO, null);
     }
 
     @PutMapping(path = "/{id}")
+    @JsonView(JsonViews.PublisherShowView.class)
     @Operation(summary = "Modify a Publisher", description = "Returns the modified Publisher")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = CountryCustomApiResponse.class))}),
-    })
     public CustomApiResponse update(@Valid @RequestBody PublisherDTO publisherDTO, @PathVariable Long id) {
         return publisherService.persist(publisherDTO, id);
     }

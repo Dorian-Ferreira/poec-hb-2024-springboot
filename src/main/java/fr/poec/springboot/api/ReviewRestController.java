@@ -24,15 +24,6 @@ public class ReviewRestController {
     @GetMapping
     @JsonView(JsonViews.ReviewListView.class)
     @Operation(summary = "Get a list of Review", description = "Returns all Review of the application")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ReviewCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse list() {
         return reviewService.findAll();
     }
@@ -40,11 +31,6 @@ public class ReviewRestController {
     @PostMapping
     @Operation(summary = "Add a Review", description = "Returns the added Review")
     @JsonView(JsonViews.ReviewListView.class)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserShowCustomApiResponse.class))}),
-    })
     public CustomApiResponse create(@Valid @RequestBody ReviewDTO reviewDTO) {
         return reviewService.persist(reviewDTO);
     }

@@ -25,15 +25,6 @@ public class UserRestController {
     @GetMapping
     @JsonView(JsonViews.UserListView.class)
     @Operation(summary = "Get a list of User", description = "Returns all User of the application")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserListCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse list() {
         return userService.findAll();
     }
@@ -41,37 +32,20 @@ public class UserRestController {
     @GetMapping(path = "/{id}")
     @JsonView(JsonViews.UserShowView.class)
     @Operation(summary = "Get a User by id", description = "Returns a User as per the id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserShowCustomApiResponse.class))}),
-
-            @ApiResponse(responseCode = "204", description = "KO", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorCustomApiResponse.class))})
-    })
     public CustomApiResponse show(@PathVariable Long id) {
         return userService.show(id);
     }
 
     @PostMapping
+    @JsonView(JsonViews.UserShowView.class)
     @Operation(summary = "Add a User", description = "Returns the added User")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserShowCustomApiResponse.class))}),
-    })
     public CustomApiResponse create(@Valid @RequestBody UserPostDTO userDTO) {
         return userService.persist(userDTO, null);
     }
 
     @PutMapping(path = "/{id}")
+    @JsonView(JsonViews.UserShowView.class)
     @Operation(summary = "Modify a User", description = "Returns the modified User")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = UserShowCustomApiResponse.class))}),
-    })
     public CustomApiResponse update(@Valid @RequestBody UserPutDTO userDTO, @PathVariable Long id) {
         return userService.persist(userDTO, id);
     }
