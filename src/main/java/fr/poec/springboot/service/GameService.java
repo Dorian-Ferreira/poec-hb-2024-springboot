@@ -71,4 +71,11 @@ public class GameService {
     public Optional<Game> getById(Long id) {
         return this.gameRepository.findById(id);
     }
+    public List<Game> findTop9ByOrderByPublishedAtDesc() {
+        return gameRepository.findTop9ByOrderByPublishedAtDesc();
+    }
+
+    public Game findBySlug(String slug) {
+        return gameRepository.findBySlug(slug).orElse(null);
+    }
 }

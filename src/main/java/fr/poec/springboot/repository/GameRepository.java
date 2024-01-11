@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface GameRepository extends JpaRepository<Game, Long>, NameRepository<Game> {
 
     Optional<Game> findBySlug(String field);
+    List<Game> findTop9ByOrderByPublishedAtDesc();
+
 }

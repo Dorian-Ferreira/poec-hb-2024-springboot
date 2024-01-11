@@ -8,10 +8,13 @@ import fr.poec.springboot.entity.Platform;
 import fr.poec.springboot.repository.PlatformRepository;
 import fr.poec.springboot.utils.Slug;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,6 +41,10 @@ public class PlatformService {
         apiResponse.setObjects(platforms);
 
         return apiResponse;
+    }
+
+    public Page<Platform> findAll(Pageable pageable) {
+        return platformRepository.findAll(pageable);
     }
 
     public CustomApiResponse persist(PlatformDTO platformDTO, Long id) {
@@ -75,5 +82,17 @@ public class PlatformService {
         platform.setName(platformDTO.getName());
 
         return platform;
+    }
+
+    public PlatformDTO getDTOById(Long id) {
+        Platform platform = getObjectById(id);
+        PlatformDTO dto = new PlatformDTO();
+        dto.setName(platform.getName());
+        return dto;
+    }
+
+    private Platform getObjectById(Long id) {
+        Optional<Platform> p = platformRepository.findById(id);
+        return p.orElse(null);
     }
 }
