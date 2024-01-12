@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +48,7 @@ public class GameService {
         Optional<Game> game;
         try {
             Long id = Long.parseLong(field);
-            game = getById(id);
+            game = findById(id);
         } catch (NumberFormatException e) {
             game = this.gameRepository.findBySlug(field);
         }
@@ -68,14 +66,14 @@ public class GameService {
         return errorApiResponse;
     }
 
-    public Optional<Game> getById(Long id) {
+    public Optional<Game> findById(Long id) {
         return this.gameRepository.findById(id);
     }
     public List<Game> findTop9ByOrderByPublishedAtDesc() {
         return gameRepository.findTop9ByOrderByPublishedAtDesc();
     }
 
-    public Game findBySlug(String slug) {
-        return gameRepository.findBySlug(slug).orElse(null);
+    public Optional<Game> findBySlug(String slug) {
+        return gameRepository.findBySlug(slug);
     }
 }

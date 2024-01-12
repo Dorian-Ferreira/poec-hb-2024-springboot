@@ -16,6 +16,6 @@ public class GameValidator implements ConstraintValidator<ExistingGame, Long> {
 
     @Override
     public boolean isValid(Long id, ConstraintValidatorContext constraintValidatorContext) {
-        return gameRepository.findById(id).isPresent();
+        return gameRepository.findById(id == null ? 0 : id).isPresent();
     }
 }

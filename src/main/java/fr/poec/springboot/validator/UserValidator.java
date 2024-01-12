@@ -16,6 +16,6 @@ public class UserValidator implements ConstraintValidator<ExistingUser, Long> {
 
     @Override
     public boolean isValid(Long id, ConstraintValidatorContext constraintValidatorContext) {
-        return userRepository.findById(id).isPresent();
+        return userRepository.findById(id == null ? 0 : id).isPresent();
     }
 }

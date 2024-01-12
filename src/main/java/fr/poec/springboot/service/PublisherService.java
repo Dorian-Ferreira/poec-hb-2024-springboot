@@ -6,7 +6,6 @@ import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
 import fr.poec.springboot.custom_response.PublisherCustomApiResponse;
 import fr.poec.springboot.entity.Publisher;
 import fr.poec.springboot.repository.PublisherRepository;
-import fr.poec.springboot.utils.Slug;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class PublisherService {
 
         try {
             Long id = Long.parseLong(field);
-            publisher = getById(id);
+            publisher = findById(id);
         } catch (NumberFormatException e) {
             publisher = this.publisherRepository.findBySlug(field);
         }
@@ -73,7 +72,7 @@ public class PublisherService {
         Publisher publisher = new Publisher();
         Optional<Publisher> oPublisher;
         if(id != null) {
-            oPublisher = getById(id);
+            oPublisher = findById(id);
             if(oPublisher.isPresent()) {
                 publisher = oPublisher.get();
             } else {
@@ -89,7 +88,10 @@ public class PublisherService {
         return publisher;
     }
 
-    public Optional<Publisher> getById(Long id) {
+    public Optional<Publisher> findById(Long id) {
         return this.publisherRepository.findById(id);
+    }
+    public Optional<Publisher> findBySlug(String slug) {
+        return this.publisherRepository.findBySlug(slug);
     }
 }

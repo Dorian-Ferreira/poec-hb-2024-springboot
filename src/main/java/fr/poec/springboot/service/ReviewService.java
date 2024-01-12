@@ -1,5 +1,6 @@
 package fr.poec.springboot.service;
 
+import fr.poec.springboot.DTO.PlatformDTO;
 import fr.poec.springboot.DTO.ReviewDTO;
 import fr.poec.springboot.custom_response.CustomApiResponse;
 import fr.poec.springboot.custom_response.ErrorCustomApiResponse;
@@ -10,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -58,7 +58,7 @@ public class ReviewService {
         review.setTitle(reviewDTO.getTitle());
         review.setContent(reviewDTO.getContent());
 
-        review.setGame(gameService.getById(reviewDTO.getGameId()).get());
+        review.setGame(gameService.findById(reviewDTO.getGameId()).get());
         review.setUser(userService.getById(reviewDTO.getUserId()).get());
 
         review.setRating(reviewDTO.getRating());
@@ -66,5 +66,22 @@ public class ReviewService {
         review.setUpVote(0);
 
         return review;
+    }
+
+    public ReviewDTO getDTOBySlug(String gameSlug, Long userId) {
+        ReviewDTO reviewDTO = new ReviewDTO();
+
+        reviewDTO.setUserId(userId);
+        reviewDTO.setGameId(gameService.findBySlug(gameSlug).get().getId());
+
+        reviewDTO.setRating(2);
+
+        return reviewDTO;
+    }
+
+    public Review save(ReviewDTO dto, String gameSlug, Long userId) {
+        dto.setUserId(userId);
+        dto.setGameId(gameService.findBySlug(gameSlug).get().getId());
+        return reviewRepository.saveAndFlush(reviewFromDTO(dto));
     }
 }
