@@ -7,18 +7,23 @@ import fr.poec.springboot.entity.User;
 import fr.poec.springboot.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
     private CountryService countryService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public CustomApiResponse findAll() {
         UserListCustomApiResponse apiResponse = new UserListCustomApiResponse();
@@ -105,7 +110,8 @@ public class UserService {
         user.setWallet(0);
 
         user.setNickname(userDTO.getNickname());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+
         user.setProfileImage(userDTO.getProfileImage());
         if(userDTO.getCountryId() != null) {
             countryService.getById(userDTO.getCountryId()).ifPresent(user::setCountry);
@@ -123,7 +129,7 @@ public class UserService {
         User user = oUser.get();
 
         if(userDTO.getPassword() != null || !user.getPassword().isBlank()) {
-            user.setPassword(userDTO.getPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         }
 
         user.setNickname(userDTO.getNickname());
@@ -141,5 +147,32 @@ public class UserService {
 
     public Optional<User> getById(Long id) {
         return userRepository.findById(id);
+    }
+
+    // Le paramètre est un "email", c'est juste que SpringBoot appelle l'identifiant de connexion "username"
+    // On doit donc définir ici, comment SpringBoot va créer un objet "UserDetails" à partir de notre objet courant, ici User
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = optionalUser.get();
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                userGrantedAuthority(user.getRoles())
+        );
+    }
+
+    private List<GrantedAuthority> userGrantedAuthority(String role) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<String> roles = Collections.singletonList(role);
+        roles.forEach(r -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            if (r.contains("ADMIN")) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            }
+        });
+        return authorities;
     }
 }

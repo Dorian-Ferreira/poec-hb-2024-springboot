@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping(value = "/", name = "AppHome")
 @AllArgsConstructor
 public class HomeController {
 
     private GameService gameService;
 
-    @GetMapping
+    @GetMapping(name = "index")
     public ModelAndView home(ModelAndView mav) {
         mav.setViewName("index");
         mav.addObject("gamesReleased", gameService.findTop9ByOrderByPublishedAtDesc());

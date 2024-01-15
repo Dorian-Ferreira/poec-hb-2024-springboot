@@ -28,11 +28,11 @@ public class ReviewDTO {
     @NotNull(message = "The rating has to have a value")
     private double rating;
 
-//    @ExistingUser
-//    @NotNull(message = "The User must be set")
+    @ExistingUser
+    @NotNull(message = "The User must be set")
     private Long userId;
 
-//    @ExistingGame
-//    @NotNull(message = "The Game must be set")
+    @ExistingGame
+    @NotNull(message = "The Game must be set")
     private Long gameId;
 }

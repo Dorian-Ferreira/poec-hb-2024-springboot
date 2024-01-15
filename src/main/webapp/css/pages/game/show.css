@@ -1,0 +1,19 @@
+
+.container-img {
+    width: 100%;
+}
+
+.container-img img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 0.5em;
+}
+
+.description ul {
+    list-style: none;
+}
+
+.review-content {
+    height: 120px;
+}

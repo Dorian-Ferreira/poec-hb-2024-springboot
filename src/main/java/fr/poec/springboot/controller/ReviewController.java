@@ -18,14 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/review")
+@RequestMapping(value = "/review", name = "AppReview")
 public class ReviewController {
 
     private final ReviewService reviewService;
     private final GameService gameService;
 
 
-    @GetMapping("/add/{slug}")
+    @GetMapping(value = "/add/{slug}", name = "add")
     public ModelAndView edit(
             ModelAndView mav,
             HttpServletRequest httpServletRequest,
@@ -45,7 +45,7 @@ public class ReviewController {
         );
     }
 
-    @PostMapping("/add/{slug}")
+    @PostMapping(value = "/add/{slug}", name = "addHandler")
     public ModelAndView formHandler(
         @Valid @ModelAttribute("review") ReviewDTO reviewDTO,
         BindingResult result,
@@ -76,6 +76,7 @@ public class ReviewController {
     ) {
         if (result.hasErrors()) {
             mav.setViewName("review/form");
+            mav.addObject("game",gameService.findBySlug(gameSlug).get());
             return mav;
         }
         Review r = reviewService.save(dto, gameSlug, 1L);

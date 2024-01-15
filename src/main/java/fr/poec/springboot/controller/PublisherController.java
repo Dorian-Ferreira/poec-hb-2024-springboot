@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/publisher")
+@RequestMapping(value = "/publisher", name = "AppPublisher")
 @AllArgsConstructor
 public class PublisherController {
 
     private final PublisherService publisherService;
 
-    @GetMapping("/{slug}")
+    @GetMapping(value = "/{slug}", name = "show")
     public ModelAndView show(ModelAndView mav, @PathVariable String slug) {
         Publisher publisher;
         try {

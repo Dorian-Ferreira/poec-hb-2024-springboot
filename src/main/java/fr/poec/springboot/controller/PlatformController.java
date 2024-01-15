@@ -14,19 +14,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/platform")
+@RequestMapping(value = "/platform", name = "AppPlatform")
 public class PlatformController {
 
     private final PlatformService platformService;
 
-    @GetMapping("")
+    @GetMapping(value = "", name = "index")
     public ModelAndView index(ModelAndView mav) {
         mav.setViewName("platform/index");
         mav.addObject("platforms", platformService.findAll(PageRequest.of(0, 5)).getContent());
         return mav;
     }
 
-    @GetMapping("/new")
+    @GetMapping(value = "/new", name = "new")
     public ModelAndView create(
             ModelAndView mav,
             HttpServletRequest httpServletRequest
@@ -39,7 +39,7 @@ public class PlatformController {
         );
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping(value = "/edit/{id}", name = "edit")
     public ModelAndView edit(
             ModelAndView mav,
             HttpServletRequest httpServletRequest,
@@ -53,7 +53,7 @@ public class PlatformController {
         );
     }
 
-    @PostMapping("/new")
+    @PostMapping(value = "/new", name = "newHandler")
     public ModelAndView formHandler(
         @Valid @ModelAttribute("platform") PlatformDTO platformDTO,
         BindingResult result,
@@ -62,7 +62,7 @@ public class PlatformController {
         return formHandle(result, mav, platformDTO, null);
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping(value = "/edit/{id}", name = "editHandler")
     public ModelAndView formHandler(
         @Valid @ModelAttribute("platform") PlatformDTO platformDTO,
         BindingResult result,

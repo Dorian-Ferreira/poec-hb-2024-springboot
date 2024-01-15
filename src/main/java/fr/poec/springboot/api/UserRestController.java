@@ -36,13 +36,6 @@ public class UserRestController {
         return userService.show(id);
     }
 
-    @PostMapping
-    @JsonView(JsonViews.UserShowView.class)
-    @Operation(summary = "Add a User", description = "Returns the added User")
-    public CustomApiResponse create(@Valid @RequestBody UserPostDTO userDTO) {
-        return userService.persist(userDTO, null);
-    }
-
     @PutMapping(path = "/{id}")
     @JsonView(JsonViews.UserShowView.class)
     @Operation(summary = "Modify a User", description = "Returns the modified User")

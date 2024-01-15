@@ -7,7 +7,7 @@
             <h1>${game.name}</h1>
             <h3 class="mt-4">Price: ${game.price}&euro;</h3>
             <c:if test="${game.publisher != null}">
-                <h3 class="mt-4">Published by <a  href="/publisher/${game.publisher.slug}">${game.publisher.name}</a></h3>
+                <h3 class="mt-4">Published by <a href="${s:mvcUrl('AppPublisher#show').arg(1, game.publisher.slug).build()}">${game.publisher.name}</a></h3>
             </c:if>
             <h3 class="mb-0 mt-4">Categories:</h3>
             <c:forEach items="${game.categories}" var="category">
@@ -54,7 +54,7 @@
             </c:forEach>
         </div>
     </c:if>
-    <a href="/review/add/${game.slug}">Add a review</a>
+    <a href="${s:mvcUrl('AppReview#add').arg(2, game.slug).build()}">Add a review</a>
 
 </div>
 

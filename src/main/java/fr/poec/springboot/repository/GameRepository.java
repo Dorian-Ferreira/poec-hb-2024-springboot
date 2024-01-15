@@ -15,4 +15,6 @@ public interface GameRepository extends JpaRepository<Game, Long>, NameRepositor
     Optional<Game> findBySlug(String field);
     List<Game> findTop9ByOrderByPublishedAtDesc();
 
+    List<Game> findAllByNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(String s1, String s2, String s3, String s4);
+
 }

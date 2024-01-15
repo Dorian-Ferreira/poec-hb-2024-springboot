@@ -1,0 +1,9 @@
+
+.link-if {
+    text-decoration: none;
+    color: #fff;
+}
+
+.link-if:hover {
+    color: var(--bs-primary);
+}

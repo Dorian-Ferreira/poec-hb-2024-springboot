@@ -76,4 +76,28 @@ public class GameService {
     public Optional<Game> findBySlug(String slug) {
         return gameRepository.findBySlug(slug);
     }
+
+    public CustomApiResponse findAllBySearchedValueApi(String search) {
+        GameListCustomApiResponse apiResponse = new GameListCustomApiResponse();
+        ErrorCustomApiResponse errorApiResponse = new ErrorCustomApiResponse();
+
+        apiResponse.setEntity(Game.class.getSimpleName());
+        errorApiResponse.setEntity(Game.class.getSimpleName());
+
+        apiResponse.setObjects(gameRepository.findAllByNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(search, search, search, search));
+
+        if(apiResponse.getObjects().isEmpty()) {
+            errorApiResponse.setCode(HttpStatus.NO_CONTENT.value());
+            errorApiResponse.setMessage("There is no games.");
+            return errorApiResponse;
+        }
+
+        apiResponse.setCode(HttpStatus.OK.value());
+
+        return apiResponse;
+    }
+
+    public List<Game> findAllBySearchedValue(String search) {
+        return gameRepository.findAllByNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(search, search, search, search);
+    }
 }

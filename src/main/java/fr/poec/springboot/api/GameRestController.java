@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @AllArgsConstructor
@@ -34,5 +35,13 @@ public class GameRestController {
     @Operation(summary = "Get a Game by id or slug", description = "Returns a Game as per the id or slug")
     public CustomApiResponse show(@PathVariable String field) {
         return gameService.show(field);
+    }
+
+
+    @GetMapping(path = "/search/{searched}")
+    @JsonView(JsonViews.GameListView.class)
+    @Operation(summary = "Get a List of Game", description = "Returns all Game as per the searched term")
+    public CustomApiResponse search(@PathVariable String searched) {
+        return gameService.findAllBySearchedValueApi(searched);
     }
 }

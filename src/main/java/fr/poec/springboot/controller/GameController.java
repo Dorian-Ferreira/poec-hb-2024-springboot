@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/game")
+@RequestMapping(value = "/game", name = "AppGame")
 @AllArgsConstructor
 public class GameController {
 
     private final GameService gameService;
 
-    @GetMapping("/{slug}")
+    @GetMapping(value = "/{slug}", name = "show")
     public ModelAndView show(ModelAndView mav, @PathVariable String slug) {
         Game game;
         try {
@@ -30,6 +30,13 @@ public class GameController {
         }
         mav.setViewName("game/show");
         mav.addObject("game", game);
+        return mav;
+    }
+
+    @GetMapping(path = "/search/{searched}", name = "search")
+    public ModelAndView search(@PathVariable String searched, ModelAndView mav) {
+        mav.setViewName("index");
+        mav.addObject("gamesReleased", gameService.findAllBySearchedValue(searched));
         return mav;
     }
 }
