@@ -46,4 +46,8 @@ public class ReviewService implements DAOServiceInterface<Review> {
         return reviewRepository.saveAndFlush(review);
     }
 
+    public List<Review> getLastReviews() {
+        return reviewRepository.getTop5ByOrderByCreatedAtDesc();
+    }
+
 }

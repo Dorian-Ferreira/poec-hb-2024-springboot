@@ -100,4 +100,8 @@ public class UserService implements DAOServiceInterface<User>,
         return authorities;
     }
 
+    public List<User> getLastCreatedUsers() {
+        return userRepository.findTop5ByOrderByCreatedAtDesc();
+    }
+
 }

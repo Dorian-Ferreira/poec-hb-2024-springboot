@@ -28,6 +28,14 @@
                     <a class="link-if" href="${s:mvcUrl('AppGame#search').arg(0, category.slug).build()}">${category.name}</a>
                 </c:forEach>
             </p>
+
+            <c:if test="${game.publisher != null}">
+                <p class="m-0 mt-1">Publisher :
+                    <a class="link-if" href="${s:mvcUrl('AppGame#search').arg(0, game.publisher.name).build()}">
+                        ${game.publisher.name}
+                    </a>
+                </p>
+            </c:if>
             <c:if test="${game.platforms.size() > 0}">
                 <p class="m-0">Disponible sur :</p>
                 <ul class="list-unstyled">

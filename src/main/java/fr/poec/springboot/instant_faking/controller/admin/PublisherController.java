@@ -1,12 +1,16 @@
 package fr.poec.springboot.instant_faking.controller.admin;
 
 import fr.poec.springboot.instant_faking.DTO.PlatformDTO;
+import fr.poec.springboot.instant_faking.DTO.PublisherDTO;
+import fr.poec.springboot.instant_faking.DTO.PublisherWebDTO;
 import fr.poec.springboot.instant_faking.mapping.UrlRoute;
+import fr.poec.springboot.instant_faking.service.CountryService;
 import fr.poec.springboot.instant_faking.service.PlatformService;
+import fr.poec.springboot.instant_faking.service.PublisherService;
 import fr.poec.springboot.instant_faking.validator.group.ValidationGroup;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,32 +19,33 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping(name = "AppPlatform")
-public class PlatformController {
+@RequestMapping(name = "AppPublisher")
+public class PublisherController {
 
-    private final PlatformService platformService;
+    private final PublisherService publisherService;
+    private final CountryService countryService;
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM, name = "index")
+    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER, name = "index")
     public ModelAndView index(ModelAndView mav) {
-        mav.setViewName("admin/platform/index");
-        mav.addObject("platforms", platformService.findAll());
+        mav.setViewName("admin/publisher/index");
+        mav.addObject("publishers", publisherService.findAll());
         return mav;
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "new")
+    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_NEW, name = "new")
     public ModelAndView create(
             ModelAndView mav,
             HttpServletRequest httpServletRequest
     ) {
         return getFormByDTO(
                 mav,
-                new PlatformDTO(),
+                new PublisherWebDTO(),
                 httpServletRequest.getRequestURI(),
                 false
         );
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "edit")
+    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_EDIT + "/{id}", name = "edit")
     public ModelAndView edit(
             @PathVariable Long id,
             ModelAndView mav,
@@ -48,24 +53,24 @@ public class PlatformController {
     ) {
         return getFormByDTO(
                 mav,
-                platformService.getDTOById(id),
+                publisherService.getDTOById(id),
                 httpServletRequest.getRequestURI(),
                 true
         );
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "newHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_NEW, name = "newHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Valid @ModelAttribute("publisher") PublisherWebDTO platformDTO,
         BindingResult result,
         ModelAndView mav
     ) {
         return formHandle(result, mav, platformDTO, null);
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "editHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_EDIT + "/{id}", name = "editHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Valid @ModelAttribute("publisher") PublisherWebDTO platformDTO,
         BindingResult result,
         ModelAndView mav,
         @PathVariable Long id
@@ -75,29 +80,30 @@ public class PlatformController {
 
     private ModelAndView getFormByDTO(
             ModelAndView mav,
-            PlatformDTO dto,
+            PublisherWebDTO dto,
             String uri,
             boolean isEdit
     ) {
-        mav.setViewName("admin/platform/form");
-        mav.addObject("platform", dto);
+        mav.setViewName("admin/publisher/form");
+        mav.addObject("publisher", dto);
         mav.addObject("action", uri);
         mav.addObject("isEdit", isEdit);
+        mav.addObject("countries", countryService.findAll());
         return mav;
     }
 
     private ModelAndView formHandle(
             BindingResult result,
             ModelAndView mav,
-            PlatformDTO dto,
+            PublisherWebDTO dto,
             Long id
     ) {
         if (result.hasErrors()) {
-            mav.setViewName("admin/platform/form");
+            mav.setViewName("admin/publisher/form");
             return mav;
         }
-        platformService.persist(dto, id);
-        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_PLATFORM); // FORCEMENT UN PATH (une URL de route !)
+        publisherService.persist(dto, id);
+        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_PUBLISHER); // FORCEMENT UN PATH (une URL de route !)
         return mav;
     }
 }

@@ -1,7 +1,9 @@
 package fr.poec.springboot.instant_faking.service;
 
 import fr.poec.springboot.instant_faking.DTO.CountryDTO;
+import fr.poec.springboot.instant_faking.DTO.PlatformDTO;
 import fr.poec.springboot.instant_faking.entity.Country;
+import fr.poec.springboot.instant_faking.entity.Platform;
 import fr.poec.springboot.instant_faking.exception.NotFoundInstantFakingException;
 import fr.poec.springboot.instant_faking.repository.CountryRepository;
 import lombok.AllArgsConstructor;
@@ -52,5 +54,14 @@ public class CountryService implements DAOServiceInterface<Country> {
         country.setCode(countryDTO.getCode().toLowerCase());
         country.setUrlFlag("https://flagcdn.com/32x24/"+countryDTO.getCode().toLowerCase()+".png");
         return countryRepository.saveAndFlush(country);
+    }
+
+    public CountryDTO getDTOById(Long id) {
+        Country country = getObjectById(id);
+        CountryDTO dto = new CountryDTO();
+        dto.setName(country.getName());
+        dto.setCode(country.getCode());
+        dto.setNationality(country.getNationality());
+        return dto;
     }
 }

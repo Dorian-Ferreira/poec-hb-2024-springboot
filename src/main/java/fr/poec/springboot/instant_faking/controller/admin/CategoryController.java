@@ -1,46 +1,44 @@
 package fr.poec.springboot.instant_faking.controller.admin;
 
-import fr.poec.springboot.instant_faking.DTO.PlatformDTO;
+import fr.poec.springboot.instant_faking.DTO.CategoryDTO;
 import fr.poec.springboot.instant_faking.mapping.UrlRoute;
-import fr.poec.springboot.instant_faking.service.PlatformService;
-import fr.poec.springboot.instant_faking.validator.group.ValidationGroup;
+import fr.poec.springboot.instant_faking.service.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping(name = "AppPlatform")
-public class PlatformController {
+@RequestMapping(name = "AppCategory")
+public class CategoryController {
 
-    private final PlatformService platformService;
+    private final CategoryService categoryService;
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM, name = "index")
+    @GetMapping(path = UrlRoute.URL_ADMIN_CATEGORY, name = "index")
     public ModelAndView index(ModelAndView mav) {
-        mav.setViewName("admin/platform/index");
-        mav.addObject("platforms", platformService.findAll());
+        mav.setViewName("admin/category/index");
+        mav.addObject("categories", categoryService.findAll());
         return mav;
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "new")
+    @GetMapping(path = UrlRoute.URL_ADMIN_CATEGORY_NEW, name = "new")
     public ModelAndView create(
             ModelAndView mav,
             HttpServletRequest httpServletRequest
     ) {
         return getFormByDTO(
                 mav,
-                new PlatformDTO(),
+                new CategoryDTO(),
                 httpServletRequest.getRequestURI(),
                 false
         );
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "edit")
+    @GetMapping(path = UrlRoute.URL_ADMIN_CATEGORY_EDIT + "/{id}", name = "edit")
     public ModelAndView edit(
             @PathVariable Long id,
             ModelAndView mav,
@@ -48,39 +46,39 @@ public class PlatformController {
     ) {
         return getFormByDTO(
                 mav,
-                platformService.getDTOById(id),
+                categoryService.getDTOById(id),
                 httpServletRequest.getRequestURI(),
                 true
         );
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "newHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_CATEGORY_NEW, name = "newHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Valid @ModelAttribute("category") CategoryDTO categoryDTO,
         BindingResult result,
         ModelAndView mav
     ) {
-        return formHandle(result, mav, platformDTO, null);
+        return formHandle(result, mav, categoryDTO, null);
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "editHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_CATEGORY_EDIT + "/{id}", name = "editHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Valid @ModelAttribute("category") CategoryDTO categoryDTO,
         BindingResult result,
         ModelAndView mav,
         @PathVariable Long id
     ) {
-        return formHandle(result, mav, platformDTO, id);
+        return formHandle(result, mav, categoryDTO, id);
     }
 
     private ModelAndView getFormByDTO(
             ModelAndView mav,
-            PlatformDTO dto,
+            CategoryDTO dto,
             String uri,
             boolean isEdit
     ) {
-        mav.setViewName("admin/platform/form");
-        mav.addObject("platform", dto);
+        mav.setViewName("admin/category/form");
+        mav.addObject("category", dto);
         mav.addObject("action", uri);
         mav.addObject("isEdit", isEdit);
         return mav;
@@ -89,15 +87,15 @@ public class PlatformController {
     private ModelAndView formHandle(
             BindingResult result,
             ModelAndView mav,
-            PlatformDTO dto,
+            CategoryDTO dto,
             Long id
     ) {
         if (result.hasErrors()) {
-            mav.setViewName("admin/platform/form");
+            mav.setViewName("admin/category/form");
             return mav;
         }
-        platformService.persist(dto, id);
-        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_PLATFORM); // FORCEMENT UN PATH (une URL de route !)
+        categoryService.persist(dto, id);
+        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_CATEGORY); // FORCEMENT UN PATH (une URL de route !)
         return mav;
     }
 }

@@ -1,7 +1,9 @@
 package fr.poec.springboot.instant_faking.controller.admin;
 
+import fr.poec.springboot.instant_faking.DTO.CountryDTO;
 import fr.poec.springboot.instant_faking.DTO.PlatformDTO;
 import fr.poec.springboot.instant_faking.mapping.UrlRoute;
+import fr.poec.springboot.instant_faking.service.CountryService;
 import fr.poec.springboot.instant_faking.service.PlatformService;
 import fr.poec.springboot.instant_faking.validator.group.ValidationGroup;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,32 +17,32 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping(name = "AppPlatform")
-public class PlatformController {
+@RequestMapping(name = "AppCountry")
+public class CountryController {
 
-    private final PlatformService platformService;
+    private final CountryService countryService;
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM, name = "index")
+    @GetMapping(path = UrlRoute.URL_ADMIN_COUNTRY, name = "index")
     public ModelAndView index(ModelAndView mav) {
-        mav.setViewName("admin/platform/index");
-        mav.addObject("platforms", platformService.findAll());
+        mav.setViewName("admin/country/index");
+        mav.addObject("countries", countryService.findAll());
         return mav;
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "new")
+    @GetMapping(path = UrlRoute.URL_ADMIN_COUNTRY_NEW, name = "new")
     public ModelAndView create(
             ModelAndView mav,
             HttpServletRequest httpServletRequest
     ) {
         return getFormByDTO(
                 mav,
-                new PlatformDTO(),
+                new CountryDTO(),
                 httpServletRequest.getRequestURI(),
                 false
         );
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "edit")
+    @GetMapping(path = UrlRoute.URL_ADMIN_COUNTRY_EDIT + "/{id}", name = "edit")
     public ModelAndView edit(
             @PathVariable Long id,
             ModelAndView mav,
@@ -48,39 +50,39 @@ public class PlatformController {
     ) {
         return getFormByDTO(
                 mav,
-                platformService.getDTOById(id),
+                countryService.getDTOById(id),
                 httpServletRequest.getRequestURI(),
                 true
         );
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_NEW, name = "newHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_COUNTRY_NEW, name = "newHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("country") CountryDTO countryDTO,
         BindingResult result,
         ModelAndView mav
     ) {
-        return formHandle(result, mav, platformDTO, null);
+        return formHandle(result, mav, countryDTO, null);
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PLATFORM_EDIT + "/{id}", name = "editHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_COUNTRY_EDIT + "/{id}", name = "editHandler")
     public ModelAndView formHandler(
-        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("platform") PlatformDTO platformDTO,
+        @Validated(ValidationGroup.OnPostItem.class) @ModelAttribute("country") CountryDTO countryDTO,
         BindingResult result,
         ModelAndView mav,
         @PathVariable Long id
     ) {
-        return formHandle(result, mav, platformDTO, id);
+        return formHandle(result, mav, countryDTO, id);
     }
 
     private ModelAndView getFormByDTO(
             ModelAndView mav,
-            PlatformDTO dto,
+            CountryDTO dto,
             String uri,
             boolean isEdit
     ) {
-        mav.setViewName("admin/platform/form");
-        mav.addObject("platform", dto);
+        mav.setViewName("admin/country/form");
+        mav.addObject("country", dto);
         mav.addObject("action", uri);
         mav.addObject("isEdit", isEdit);
         return mav;
@@ -89,15 +91,15 @@ public class PlatformController {
     private ModelAndView formHandle(
             BindingResult result,
             ModelAndView mav,
-            PlatformDTO dto,
+            CountryDTO dto,
             Long id
     ) {
         if (result.hasErrors()) {
-            mav.setViewName("admin/platform/form");
+            mav.setViewName("admin/country/form");
             return mav;
         }
-        platformService.persist(dto, id);
-        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_PLATFORM); // FORCEMENT UN PATH (une URL de route !)
+        countryService.persist(dto, id);
+        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_COUNTRY); // FORCEMENT UN PATH (une URL de route !)
         return mav;
     }
 }

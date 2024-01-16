@@ -30,7 +30,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <security:authorize access="hasRole('ROLE_ADMIN')">
-                                <a class="nav-link" href="${UrlRoute.URL_ADMIN_PLATFORM}">Platform</a>
+                                <a class="nav-link" href="${UrlRoute.URL_ADMIN}">Admin</a>
                             </security:authorize>
                         </div>
                     </div>
@@ -63,9 +63,9 @@
                     <security:authorize access="isAuthenticated()">
                         <div class="d-flex justify-content-end">
                             Bienvenue
-                            <span class="ms-2 logged-user">
+                            <a href="${UrlRoute.URL_USER}" class="ms-2 logged-user">
                                 <security:authentication property="name"/>
-                            </span>
+                            </a>
                         </div>
                         <div class="d-flex justify-content-end">
                             <form method="POST" action="${UrlRoute.URL_LOGOUT}" autocomplete="off">

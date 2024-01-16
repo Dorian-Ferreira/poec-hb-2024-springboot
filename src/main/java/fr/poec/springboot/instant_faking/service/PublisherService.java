@@ -1,6 +1,9 @@
 package fr.poec.springboot.instant_faking.service;
 
+import fr.poec.springboot.instant_faking.DTO.CountryDTO;
 import fr.poec.springboot.instant_faking.DTO.PublisherDTO;
+import fr.poec.springboot.instant_faking.DTO.PublisherWebDTO;
+import fr.poec.springboot.instant_faking.entity.Country;
 import fr.poec.springboot.instant_faking.entity.Publisher;
 import fr.poec.springboot.instant_faking.exception.NotFoundInstantFakingException;
 import fr.poec.springboot.instant_faking.repository.PublisherRepository;
@@ -46,5 +49,33 @@ public class PublisherService {
 
         // Si id = null, le save fera un insert, sinon un update
         return publisherRepository.saveAndFlush(p);
+    }
+
+    public Publisher persist(PublisherWebDTO publisherDTO, Long id) {
+        if (id != null && publisherRepository.findById(id).isEmpty()) {
+            throw new NotFoundInstantFakingException(
+                    "Publisher", "id", id
+            );
+        }
+
+        Publisher p = new Publisher();
+        p.setId(id);
+        p.setName(publisherDTO.getName());
+        p.setCreatedAt(publisherDTO.getCreatedAt());
+        p.setWebsite(publisherDTO.getWebsite());
+        p.setCountry(publisherDTO.getCountry());
+
+        // Si id = null, le save fera un insert, sinon un update
+        return publisherRepository.saveAndFlush(p);
+    }
+
+    public PublisherWebDTO getDTOById(Long id) {
+        Publisher publisher = show(id);
+        PublisherWebDTO dto = new PublisherWebDTO();
+        dto.setName(publisher.getName());
+        dto.setCreatedAt(publisher.getCreatedAt());
+        dto.setWebsite(publisher.getWebsite());
+        dto.setCountry(publisher.getCountry());
+        return dto;
     }
 }

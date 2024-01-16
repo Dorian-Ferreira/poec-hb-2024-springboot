@@ -45,6 +45,6 @@ public interface GameRepository
 
     Optional<Game> findBySlug(String slug);
 
-    List<Game> findAllByNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(String s1, String s2, String s3, String s4);
+    List<Game> findAllByNameIsContainingIgnoreCaseOrPublisherNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(String s1, String s2, String s3, String s4, String s5);
 
 }

@@ -45,6 +45,6 @@ public class GameService {
     }
 
     public List<Game> findAllBySearchedValue(String search) {
-        return gameRepository.findAllByNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(search, search, search, search);
+        return gameRepository.findAllByNameIsContainingIgnoreCaseOrPublisherNameIsContainingIgnoreCaseOrCategoriesNameIsContainingIgnoreCaseOrPlatformsNameIsContainingIgnoreCaseOrCountriesNameIsContainingIgnoreCaseOrderByPriceDesc(search, search, search, search, search);
     }
 }

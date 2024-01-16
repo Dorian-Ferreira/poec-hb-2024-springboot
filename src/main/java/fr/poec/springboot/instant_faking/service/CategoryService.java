@@ -1,7 +1,9 @@
 package fr.poec.springboot.instant_faking.service;
 
 import fr.poec.springboot.instant_faking.DTO.CategoryDTO;
+import fr.poec.springboot.instant_faking.DTO.CountryDTO;
 import fr.poec.springboot.instant_faking.entity.Category;
+import fr.poec.springboot.instant_faking.entity.Country;
 import fr.poec.springboot.instant_faking.exception.NotFoundInstantFakingException;
 import fr.poec.springboot.instant_faking.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -51,5 +53,12 @@ public class CategoryService implements DAOServiceInterface<Category> {
         category.setName(categoryDTO.getName());
         category.setImage(categoryDTO.getImage());
         return categoryRepository.saveAndFlush(category);
+    }
+
+    public CategoryDTO getDTOById(Long id) {
+        Category category = getObjectById(id);
+        CategoryDTO dto = new CategoryDTO();
+        dto.setName(category.getName());
+        return dto;
     }
 }
