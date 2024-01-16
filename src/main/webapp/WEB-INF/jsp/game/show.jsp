@@ -1,63 +1,98 @@
-<%@ include file="../base.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="../tag.jsp" %>
+<c:set var="title" scope="request" value="${game.name}"/>
+<jsp:include flush="true" page="../base.jsp"/>
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        <img class="col-6 p-3 image-fluid" alt="${game.name}" src="${game.thumbnailCover}">
+        <div class="col-6">
+            <div class="container-img p-3">
+                <img alt="${game.name}" src="${game.thumbnailCover}">
+            </div>
+        </div>
         <div class="col-6">
             <h1>${game.name}</h1>
-            <h3 class="mt-4">Price: ${game.price}&euro;</h3>
-            <c:if test="${game.publisher != null}">
-                <h3 class="mt-4">Published by <a href="${s:mvcUrl('AppPublisher#show').arg(1, game.publisher.slug).build()}">${game.publisher.name}</a></h3>
+            <div class="d-flex">
+                <c:forEach items="${game.countries}" var="country">
+                    <a class="link-if" href="${s:mvcUrl('AppGame#search').arg(0, country.name.toLowerCase()).build()}">
+                        <img class="me-1"
+                             src="${country.urlFlag}"
+                             alt="${country.name}"
+                             title="${country.nationality}"
+                        >
+                    </a>
+                </c:forEach>
+            </div>
+            <p class="m-0 mt-1">Genres :
+                <c:forEach items="${game.categories}" var="category">
+                    <a class="link-if" href="${s:mvcUrl('AppGame#search').arg(0, category.slug).build()}">${category.name}</a>
+                </c:forEach>
+            </p>
+            <c:if test="${game.platforms.size() > 0}">
+                <p class="m-0">Disponible sur :</p>
+                <ul class="list-unstyled">
+                    <c:forEach items="${game.platforms}" var="platform">
+                        <li>
+                            <a class="link-if" href="${s:mvcUrl('AppGame#search').arg(0, platform.slug).build()}">
+                                ${platform.name}
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
             </c:if>
-            <h3 class="mb-0 mt-4">Categories:</h3>
-            <c:forEach items="${game.categories}" var="category">
-                <a href="${s:mvcUrl('AppGame#search').arg(0, category.name).build()}" class="mb-0">${category.name}</a>
-            </c:forEach>
-
-            <h3 class="mb-0 mt-4">Available on:</h3>
-            <c:forEach items="${game.platforms}" var="platform">
-                <a href="${s:mvcUrl('AppGame#search').arg(0, platform.name).build()}" class="mb-0">${platform.name}</a>
-            </c:forEach>
-
-            <h3 class="mb-0 mt-4">Available in:</h3>
-            <c:forEach items="${game.countries}" var="language">
-                <a href="${s:mvcUrl('AppGame#search').arg(0, language.name).build()}">
-                    <img class="mb-0" alt="${language.name}" src="${language.urlFlag}">
-                </a>
-            </c:forEach>
+            <p class="fs-2">${game.price}€</p>
         </div>
     </div>
 
     <h2 class="my-5">Description</h2>
 
-    <div class="text-center">
+    <div class="text-center description">
         <c:out value="${game.description}" escapeXml="false"/>
     </div>
 
-
-    <c:if test="${game.reviews.size() > 2}">
-        <h2 class="my-5">Recent reviews: </h2>
-        <div class="row">
-            <c:forEach items="${game.reviews.subList(0, 3)}" var="review">
-                <div class="col-4 mt-2 game-review">
-                    <div class="review-card">
-                        <div class="d-flex justify-content-between">
-                            <img alt="${review.user.name}" src="${review.user.profileImage}">
-                            <p>${review.user.name}</p>
-                        </div>
-                        <div class="review-card">
-                            <h3>${review.title}</h3>
-                            <div class="text-truncate review-content">
-                                ${review.content}
-                            </div>
-                        </div>
+    <h2 class="my-3">Commentaires</h2>
+        <c:if test="${game.reviews.size() > 0}">
+            <div class="row">
+                <c:set value="12" scope="request" var="max"/>
+                <c:if test="${game.reviews.size() <= 12}">
+                    <c:set value="${game.reviews.size()}" scope="request" var="max"/>
+                </c:if>
+                <c:forEach items="${game.reviews.subList(0, max)}" var="review">
+                    <div class="col-3">
+                        <div>${review.rating}/5</div>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:if>
+        <security:authorize access="isAuthenticated()">
+            <f:form modelAttribute="reviewDto" method="post" action="${s:mvcUrl('AppReview#create').arg(0, game.slug).build()}" cssClass="p-5 col-lg-6 col-md-8 col-sm-12 mx-auto">
+                <div class="mb-3 row">
+                    <f:label path="title" class="col-sm-2 col-form-label">Title</f:label>
+                    <div class="col-sm-10">
+                        <f:input type="text" cssClass="form-control" path="title"/>
+                        <f:errors path="title" cssClass="invalid-feedback"/>
                     </div>
                 </div>
-            </c:forEach>
-        </div>
-    </c:if>
-    <a href="${s:mvcUrl('AppReview#add').arg(2, game.slug).build()}">Add a review</a>
-
+                <div class="mb-3 row">
+                    <f:label path="content" class="col-sm-2 col-form-label">Content</f:label>
+                    <div class="col-sm-10">
+                        <f:textarea cssClass="form-control review-content" path="content"/>
+                        <f:errors path="content" cssClass="invalid-feedback"/>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <f:label path="rating" class="col-sm-2 col-form-label">Rating</f:label>
+                    <div class="col-sm-10">
+                        <f:input type="number" min="0" max="5" step="0.5" cssClass="form-control" path="rating"/>
+                        <f:errors path="rating" cssClass="invalid-feedback"/>
+                    </div>
+                </div>
+                <f:input type="number" path="userId" hidden="hidden"/>
+                <f:input type="number" path="gameId" hidden="hidden"/>
+                <f:button class="btn btn-secondary" type="reset">Reset</f:button>
+                <f:button class="btn btn-primary">Submit</f:button>
+            </f:form>
+        </security:authorize>
 </div>
 
 <%@ include file="../footer.jsp" %>

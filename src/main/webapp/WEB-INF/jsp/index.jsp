@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="tag.jsp" %>
+<c:set var="title" scope="request" value="Instant-Faking"/>
 <jsp:include flush="true" page="base.jsp"/>
 
 <div class="container">
@@ -8,7 +9,7 @@
     <h2 class="my-5">Les dernières sorties</h2>
     <div class="row">
         <c:forEach items="${gamesReleased}" var="game">
-            <a class="col-4 mt-2 main-game-card" href="${s:mvcUrl('AppGame#show').arg(1, game.slug).build()}">
+            <a class="col-4 mt-2 main-game-card" href="${UrlRoute.URL_GAME}/${game.slug}">
                 <div class="game-card">
                     <div class="game-card-img">
                         <img alt="${game.name}" src="${game.thumbnailCover}">

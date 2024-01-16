@@ -1,4 +1,7 @@
-<%@ include file="../base.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="../tag.jsp" %>
+<c:set var="title" scope="request" value="Form platform"/>
+<jsp:include flush="true" page="../base.jsp"/>
 
 <div class="container">
 

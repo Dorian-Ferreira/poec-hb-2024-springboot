@@ -11,7 +11,7 @@
 <html>
     <head>
         <title>${title}</title>
-        <link href="<c:url value="../../css/main.css" />" rel="stylesheet">
+        <link href="${contextPath}/css/main.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
         <script type="text/javascript" src="../../js/page/search-bar.js"></script>
     </head>
@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="row w-100">
                 <div class="col-2">
-                    <a class="navbar-brand ms-3" href="${s:mvcUrl('AppHome#index').build()}">
+                    <a class="navbar-brand ms-3" href="${contextPath}/">
                         <i class="fa-brands fa-steam fa-2x"></i>
                     </a>
                 </div>
@@ -29,7 +29,9 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link" href="/platform">Platform</a>
+                            <security:authorize access="hasRole('ROLE_ADMIN')">
+                                <a class="nav-link" href="${UrlRoute.URL_ADMIN_PLATFORM}">Platform</a>
+                            </security:authorize>
                         </div>
                     </div>
                 </div>
@@ -50,9 +52,28 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <a class="nav-link" href="${s:mvcUrl('AppRegister#register').build()}">
-                        Créer son compte
-                    </a>
+                    <security:authorize access="!isAuthenticated()">
+                        <div class="d-flex justify-content-end">
+                            <a class="nav-link" href="${UrlRoute.URL_REGISTER}">Register</a>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a class="nav-link" href="${UrlRoute.URL_LOGIN}">Login</a>
+                        </div>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <div class="d-flex justify-content-end">
+                            Bienvenue
+                            <span class="ms-2 logged-user">
+                                <security:authentication property="name"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <form method="POST" action="${UrlRoute.URL_LOGOUT}" autocomplete="off">
+                                <button type="submit" tabindex="3" class="btn btn-link">Logout</button>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            </form>
+                        </div>
+                    </security:authorize>
                 </div>
             </div>
         </nav>
