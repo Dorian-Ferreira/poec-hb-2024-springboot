@@ -11,17 +11,19 @@
             </c:if>
             <h3 class="mb-0 mt-4">Categories:</h3>
             <c:forEach items="${game.categories}" var="category">
-                <p class="mb-0">${category.name}</p>
+                <a href="${s:mvcUrl('AppGame#search').arg(0, category.name).build()}" class="mb-0">${category.name}</a>
             </c:forEach>
 
             <h3 class="mb-0 mt-4">Available on:</h3>
             <c:forEach items="${game.platforms}" var="platform">
-                <p class="mb-0">${platform.name}</p>
+                <a href="${s:mvcUrl('AppGame#search').arg(0, platform.name).build()}" class="mb-0">${platform.name}</a>
             </c:forEach>
 
             <h3 class="mb-0 mt-4">Available in:</h3>
             <c:forEach items="${game.countries}" var="language">
-                <img class="mb-0" alt="${language.name}" src="${language.urlFlag}">
+                <a href="${s:mvcUrl('AppGame#search').arg(0, language.name).build()}">
+                    <img class="mb-0" alt="${language.name}" src="${language.urlFlag}">
+                </a>
             </c:forEach>
         </div>
     </div>
