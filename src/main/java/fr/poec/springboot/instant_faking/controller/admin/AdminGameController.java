@@ -1,51 +1,49 @@
 package fr.poec.springboot.instant_faking.controller.admin;
 
-import fr.poec.springboot.instant_faking.DTO.PlatformDTO;
-import fr.poec.springboot.instant_faking.DTO.PublisherDTO;
+import fr.poec.springboot.instant_faking.DTO.GameDTO;
 import fr.poec.springboot.instant_faking.DTO.PublisherWebDTO;
 import fr.poec.springboot.instant_faking.mapping.UrlRoute;
-import fr.poec.springboot.instant_faking.service.CountryService;
-import fr.poec.springboot.instant_faking.service.PlatformService;
-import fr.poec.springboot.instant_faking.service.PublisherService;
-import fr.poec.springboot.instant_faking.validator.group.ValidationGroup;
+import fr.poec.springboot.instant_faking.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping(name = "AppPublisher")
-public class PublisherController {
+@RequestMapping(name = "AppAdminGame")
+public class AdminGameController {
 
-    private final PublisherService publisherService;
+    private final GameService gameService;
     private final CountryService countryService;
+    private final PlatformService platformService;
+    private final CategoryService categoryService;
+    private final PublisherService publisherService;
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER, name = "index")
+    @GetMapping(path = UrlRoute.URL_ADMIN_GAME, name = "index")
     public ModelAndView index(ModelAndView mav) {
-        mav.setViewName("admin/publisher/index");
-        mav.addObject("publishers", publisherService.findAll());
+        mav.setViewName("admin/game/index");
+        mav.addObject("games", gameService.findAll());
         return mav;
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_NEW, name = "new")
+    @GetMapping(path = UrlRoute.URL_ADMIN_GAME_NEW, name = "new")
     public ModelAndView create(
             ModelAndView mav,
             HttpServletRequest httpServletRequest
     ) {
         return getFormByDTO(
                 mav,
-                new PublisherWebDTO(),
+                new GameDTO(),
                 httpServletRequest.getRequestURI(),
                 false
         );
     }
 
-    @GetMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_EDIT + "/{id}", name = "edit")
+    @GetMapping(path = UrlRoute.URL_ADMIN_GAME_EDIT + "/{id}", name = "edit")
     public ModelAndView edit(
             @PathVariable Long id,
             ModelAndView mav,
@@ -53,24 +51,24 @@ public class PublisherController {
     ) {
         return getFormByDTO(
                 mav,
-                publisherService.getDTOById(id),
+                gameService.getDTOById(id),
                 httpServletRequest.getRequestURI(),
                 true
         );
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_NEW, name = "newHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_GAME_NEW, name = "newHandler")
     public ModelAndView formHandler(
-        @Valid @ModelAttribute("publisher") PublisherWebDTO platformDTO,
+        @Valid @ModelAttribute("game") GameDTO platformDTO,
         BindingResult result,
         ModelAndView mav
     ) {
         return formHandle(result, mav, platformDTO, null);
     }
 
-    @PostMapping(path = UrlRoute.URL_ADMIN_PUBLISHER_EDIT + "/{id}", name = "editHandler")
+    @PostMapping(path = UrlRoute.URL_ADMIN_GAME_EDIT + "/{id}", name = "editHandler")
     public ModelAndView formHandler(
-        @Valid @ModelAttribute("publisher") PublisherWebDTO platformDTO,
+        @Valid @ModelAttribute("game") GameDTO platformDTO,
         BindingResult result,
         ModelAndView mav,
         @PathVariable Long id
@@ -80,31 +78,37 @@ public class PublisherController {
 
     private ModelAndView getFormByDTO(
             ModelAndView mav,
-            PublisherWebDTO dto,
+            GameDTO dto,
             String uri,
             boolean isEdit
     ) {
-        mav.setViewName("admin/publisher/form");
-        mav.addObject("publisher", dto);
+        mav.setViewName("admin/game/form");
+        mav.addObject("game", dto);
         mav.addObject("action", uri);
         mav.addObject("isEdit", isEdit);
         mav.addObject("countries", countryService.findAll());
+        mav.addObject("platforms", platformService.findAll());
+        mav.addObject("categories", categoryService.findAll());
+        mav.addObject("publishers", publisherService.findAll());
         return mav;
     }
 
     private ModelAndView formHandle(
             BindingResult result,
             ModelAndView mav,
-            PublisherWebDTO dto,
+            GameDTO dto,
             Long id
     ) {
         if (result.hasErrors()) {
-            mav.setViewName("admin/publisher/form");
+            mav.setViewName("admin/game/form");
             mav.addObject("countries", countryService.findAll());
+            mav.addObject("platforms", platformService.findAll());
+            mav.addObject("categories", categoryService.findAll());
+            mav.addObject("publishers", publisherService.findAll());
             return mav;
         }
-        publisherService.persist(dto, id);
-        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_PUBLISHER); // FORCEMENT UN PATH (une URL de route !)
+        gameService.persist(dto, id);
+        mav.setViewName("redirect:" + UrlRoute.URL_ADMIN_GAME); // FORCEMENT UN PATH (une URL de route !)
         return mav;
     }
 }

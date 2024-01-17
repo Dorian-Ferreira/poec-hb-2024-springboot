@@ -38,6 +38,9 @@ public class UserService implements DAOServiceInterface<User>,
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
+    public User findByName(String name) {
+        return userRepository.findByName(name).orElseThrow();
+    }
 
     public User findByEmail(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);

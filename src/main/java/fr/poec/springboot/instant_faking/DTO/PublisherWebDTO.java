@@ -19,6 +19,7 @@ public class PublisherWebDTO {
 
     @PastDate
     @NotNull(message = "The date has to be a proper date")
+    @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date createdAt;
 
     @NotBlank(message = "The name has to have a value")

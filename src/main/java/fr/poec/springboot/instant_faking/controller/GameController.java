@@ -7,13 +7,18 @@ import fr.poec.springboot.instant_faking.mapping.UrlRoute;
 import fr.poec.springboot.instant_faking.service.GameService;
 import fr.poec.springboot.instant_faking.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping(name = "AppGame")
@@ -50,5 +55,4 @@ public class GameController {
         mav.addObject("gamesReleased", gameService.findAllBySearchedValue(searched));
         return mav;
     }
-
 }

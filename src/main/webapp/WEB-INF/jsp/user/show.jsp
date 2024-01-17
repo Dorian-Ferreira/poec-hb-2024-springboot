@@ -28,9 +28,11 @@
                     </p>
                 </c:if>
             </div>
-            <div class="d-flex">
-                <p class="m-0 mt-1"> Wallet : ${user.wallet}&euro;</p>
-            </div>
+            <c:if test="${loggedUser}">
+                <div class="d-flex">
+                    <p class="m-0 mt-1"> Wallet : ${user.wallet}&euro;</p>
+                </div>
+            </c:if>
             <div class="d-flex">
                 <c:if test="${user.nickname != null}">
                     <p class="m-0 mt-1"> Nickname : ${user.nickname}</p>

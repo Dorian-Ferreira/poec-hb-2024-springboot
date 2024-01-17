@@ -32,6 +32,9 @@
                     </li>
                 </c:forEach>
             </ul>
+
+            <p class="m-0">Total Sales :</p>
+            <p class="m-0">${totalSales}&euro;</p>
         </div>
     </div>
 </div>

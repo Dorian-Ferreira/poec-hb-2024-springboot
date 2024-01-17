@@ -53,4 +53,8 @@ public class UserOwnGameService implements DAOServiceInterface<UserOwnGame> {
     public List<UserOwnGame> getLastSales() {
         return userOwnGameRepository.findTop5ByOrderByCreatedAtDesc();
     }
+
+    public double getTotalSales() {
+        return userOwnGameRepository.findTotalSales();
+    }
 }

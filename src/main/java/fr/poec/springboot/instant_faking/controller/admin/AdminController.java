@@ -30,6 +30,7 @@ public class AdminController {
         mav.addObject("lastUsers", userService.getLastCreatedUsers());
         mav.addObject("lastSales", userOwnGameService.getLastSales());
         mav.addObject("lastReviews", reviewService.getLastReviews());
+        mav.addObject("totalSales", userOwnGameService.getTotalSales());
         return mav;
     }
 

@@ -16,10 +16,10 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers("/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/review/**").authenticated()
                     .requestMatchers(HttpMethod.POST, "/userOwnGames/**").authenticated()
                     .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                    .requestMatchers("/**").permitAll()
             )
             .formLogin(formLogin ->
                 formLogin

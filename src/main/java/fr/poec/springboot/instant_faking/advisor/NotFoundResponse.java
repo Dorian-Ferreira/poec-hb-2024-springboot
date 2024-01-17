@@ -1,6 +1,5 @@
 package fr.poec.springboot.instant_faking.advisor;
 
-
 import fr.poec.springboot.instant_faking.custom_response.ResponseException;
 import fr.poec.springboot.instant_faking.exception.NotFoundInstantFakingException;
 import org.springframework.http.HttpStatus;
