@@ -29,7 +29,7 @@ public class UserController {
             return mav;
         }
         User user = userService.findByEmail(principal.getName());
-        
+
         mav.addObject("loggedUser", principal.getName().equals(user.getUsername()));
 
         mav.setViewName("user/show");

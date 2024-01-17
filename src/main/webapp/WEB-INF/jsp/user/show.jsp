@@ -13,7 +13,7 @@
         <div class="col-6">
             <h1>${user.name}</h1>
             <div class="d-flex">
-                <p class="m-0 mt-1"> Created : ${user.createdAt}</p>
+                <p class="m-0 mt-1"> Created : <fmt:formatDate value="${user.createdAt}" pattern="dd-MM-yyyy" /></p>
             </div>
             <div class="d-flex">
                 <c:if test="${user.country != null}">
