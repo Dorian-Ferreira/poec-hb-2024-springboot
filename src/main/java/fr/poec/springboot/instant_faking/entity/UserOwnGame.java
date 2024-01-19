@@ -38,7 +38,7 @@ public class UserOwnGame {
     @JsonView(JsonViews.UserShowView.class)
     private boolean isInstalled;
 
-    @ManyToOne
+        @ManyToOne
     private User user;
 
     @ManyToOne
